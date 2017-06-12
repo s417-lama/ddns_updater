@@ -3,3 +3,4 @@ _build/*
 mix.lock
 *.swp
 ddns_updater
+*.log

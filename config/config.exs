@@ -23,6 +23,12 @@ use Mix.Config
 
 config :ddns_updater, mydns_url: "https://www.mydns.jp/login.html"
 
+config :logger, backends: [{LoggerFileBackend, :info},
+                           {LoggerFileBackend, :error}]
+
+config :logger, :info, path: "info.log", level: :info
+config :logger, :error, path: "error.log", level: :error
+
 # It is also possible to import configuration files, relative to this
 # directory. For example, you can emulate configuration per environment
 # by uncommenting the line below and defining dev.exs, test.exs and such.

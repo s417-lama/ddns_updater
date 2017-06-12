@@ -3,7 +3,7 @@ defmodule DdnsUpdater.Mixfile do
 
   def project do
     [app: :ddns_updater,
-     escript: escript_config,
+     escript: escript_config(),
      version: "0.1.0",
      elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
@@ -30,7 +30,8 @@ defmodule DdnsUpdater.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      { :httpoison, "~> 0.11" }
+      { :httpoison, "~> 0.11" },
+      { :logger_file_backend, "~> 0.0.9" }
     ]
   end
 
