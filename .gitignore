@@ -4,3 +4,4 @@ mix.lock
 *.swp
 ddns_updater
 *.log
+doc/*

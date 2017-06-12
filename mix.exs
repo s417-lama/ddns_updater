@@ -3,6 +3,8 @@ defmodule DdnsUpdater.Mixfile do
 
   def project do
     [app: :ddns_updater,
+     name: "DDNS_Updater",
+     source_url: "https://github.com/s417-lama/ddns_updater",
      escript: escript_config(),
      version: "0.1.0",
      elixir: "~> 1.4",
@@ -31,7 +33,9 @@ defmodule DdnsUpdater.Mixfile do
   defp deps do
     [
       { :httpoison, "~> 0.11" },
-      { :logger_file_backend, "~> 0.0.9" }
+      { :logger_file_backend, "~> 0.0.9" },
+      { :ex_doc, "~> 0.16" },
+      { :earmark, "~> 1.2" }
     ]
   end
 
