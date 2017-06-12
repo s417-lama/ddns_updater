@@ -2,6 +2,5 @@ deps/*
 _build/*
 mix.lock
 *.swp
-ddns_updater
 *.log
 doc/*
