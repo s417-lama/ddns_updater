@@ -1,11 +1,14 @@
 defmodule DdnsUpdater.CLI do
 
+  require Logger
+  
   @default_minutes 10
 
   def main(argv) do
     argv
     |> parse_args
-    |> process
+    |> run
+    |> wait_for_finishing
   end
 
   def parse_args(argv) do
@@ -24,7 +27,7 @@ defmodule DdnsUpdater.CLI do
     end
   end
 
-  def process(:help) do
+  def run(:help) do
     IO.puts """
     usage: ./ddns_updater <service> <username> <password> (<minutes>)
     <service>: Specify the name of DDNS service. Only "mydns" is supported now.
@@ -33,10 +36,19 @@ defmodule DdnsUpdater.CLI do
     System.halt(0);
   end
 
-  def process({service, username, password, minutes}) do
-    DdnsUpdater.Scheduler.loop(
+  def run({service, username, password, minutes}) do
+    {:ok, pid} = DdnsUpdater.Supervisor.start_link(
       fn -> DdnsUpdater.update(service, username, password) end,
       minutes)
+    pid
+  end
+
+  def wait_for_finishing(pid) do
+    Process.flag(:trap_exit, true)
+    receive do
+      {:EXIT, ^pid, reason} ->
+        Logger.error "EXIT (#{inspect reason})"
+    end
   end
 
 end

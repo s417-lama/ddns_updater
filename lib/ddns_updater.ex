@@ -6,19 +6,6 @@ defmodule DdnsUpdater do
   require Logger
 
   @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> DdnsUpdater.hello
-      :world
-
-  """
-  def hello do
-    :world
-  end
-
-  @doc """
   Send GET request to the url of the specified service for updating DDNS.
   """
   def update("mydns", username, password) do
@@ -29,9 +16,12 @@ defmodule DdnsUpdater do
   end
 
   def update(_, _, _) do
-    DdnsUpdater.CLI.process(:help)
+    DdnsUpdater.CLI.run(:help)
   end
 
+  @doc """
+  Handle the response from HTTPoison.get
+  """
   def handle_response({:ok, %{status_code: 200}}) do
     Logger.info "Update successed."
     :ok
