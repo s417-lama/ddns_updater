@@ -1,13 +1,20 @@
 defmodule DdnsUpdater.Supervisor do
   use Supervisor
 
-  def start_link(fun, minutes) do
-    {:ok, _pid} = Supervisor.start_link(__MODULE__, [fun, minutes])
+  @doc """
+  spawn Supervisor
+  """
+  def start_link(url, username, password) do
+    {:ok, _pid} = Supervisor.start_link(__MODULE__, [url, username, password])
   end
 
-  def init([fun, minutes]) do
+  @doc """
+  GenServer's callback
+  start Updater as a child.
+  """
+  def init([url, username, password]) do
     children = [
-      worker(DdnsUpdater.Scheduler, [fun, minutes])
+      worker(DdnsUpdater.Updater, [url, username, password])
     ]
     supervise children, strategy: :one_for_one
   end
