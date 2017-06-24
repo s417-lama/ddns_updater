@@ -2,5 +2,6 @@ deps/*
 _build/*
 mix.lock
 *.swp
+*.swo
 *.log
 doc/*

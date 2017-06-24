@@ -55,8 +55,8 @@ defmodule DdnsUpdater.Updater do
   :exec: execute update
   """
   def handle_call(:exec, _from, acc = {url, username, password}) do
-    ret = update(url, username, password)
-    {:reply, ret, acc}
+    update(url, username, password)
+    {:noreply, acc}
   end
 
 end
