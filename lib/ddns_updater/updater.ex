@@ -32,31 +32,31 @@ defmodule DdnsUpdater.Updater do
   @doc """
   Spawn GenServer
   """
-  def start_link(url, username, password) do
-    {:ok, _pid} = GenServer.start_link(__MODULE__, [url, username, password], name: __MODULE__)
-  end
-
-  @doc """
-  call GenServer to update
-  """
-  def exec() do
-    GenServer.call(__MODULE__, :exec)
+  def start_link(url, username, password, minutes) do
+    {:ok, _pid} = GenServer.start_link(__MODULE__, [url, username, password, minutes], name: __MODULE__)
   end
 
   @doc """
   Genserver's callback
   """
-  def init([url, username, password]) do
-    {:ok, {url, username, password}}
+  def init([url, username, password, minutes]) do
+    update(url, username, password)
+    schedule_work(minutes)
+    {:ok, {url, username, password, minutes}}
   end
 
   @doc """
   Genserver's callback
   :exec: execute update
   """
-  def handle_call(:exec, _from, acc = {url, username, password}) do
+  def handle_info(:exec, state = {url, username, password, minutes}) do
     update(url, username, password)
-    {:noreply, acc}
+    schedule_work(minutes)
+    {:noreply, state}
+  end
+
+  defp schedule_work(minutes) do
+    Process.send_after(self(), :exec, minutes * 60_000)
   end
 
 end

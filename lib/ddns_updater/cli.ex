@@ -11,7 +11,7 @@ defmodule DdnsUpdater.CLI do
     argv
     |> parse_args
     |> run
-    |> loop
+    |> wait_for_finishing
   end
 
   @doc """
@@ -53,10 +53,10 @@ defmodule DdnsUpdater.CLI do
   end
 
   def run({"mydns", username, password, minutes}) do
-    {:ok, _pid} = DdnsUpdater.Supervisor.start_link(
-      Application.get_env(:ddns_updater, :mydns_url), username, password
+    {:ok, pid} = DdnsUpdater.Supervisor.start_link(
+      Application.get_env(:ddns_updater, :mydns_url), username, password, minutes
     )
-    minutes
+    pid
   end
 
   def run(_) do
@@ -65,12 +65,14 @@ defmodule DdnsUpdater.CLI do
   end
 
   @doc """
-  call Updater every specified minutes forever.
+  If supervisor is dead, finish the program.
   """
-  def loop(minutes) do
-    DdnsUpdater.Updater.exec()
-    :timer.sleep(minutes * 60_000)
-    loop(minutes)
+  def wait_for_finishing(pid) do
+    Process.flag(:trap_exit, true)
+    receive do
+      {:EXIT, ^pid, reason} ->
+        Logger.error "EXIT (#{inspect reason})"
+    end
   end
 
 end
