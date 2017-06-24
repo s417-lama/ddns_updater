@@ -2,18 +2,34 @@
 
 update client for DDNS written in Elixir.
 
-## Installation
+## Usage
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `ddns_updater` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [{:ddns_updater, "~> 0.1.0"}]
-end
+### 1. build
 ```
+$ cd ddns_updater
+$ mix escript.build
+```
+and a file "ddns_updater" will be generated.
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/ddns_updater](https://hexdocs.pm/ddns_updater).
+### 2. run
+```
+$ ./ddns_updater <service> <username> <password> (<minutes>)
+```
+\<service>: specify the name of DDNS service. Now only "mydns" is supported.
 
+\<username>: your username of DDNS service.
+
+\<password>: your password of DDNS service.
+
+\<minutes>: update every <minutes> minutes. Default value is 10.
+
+### 3. tips
+
+If you want to run ddns_updater as daemon, you can write shell scripts like below.
+
+example:
+```sh
+#!/bin/sh
+cd $(dirname $0)
+./ddns_updater mydns <username> <password> 30 &
+```
