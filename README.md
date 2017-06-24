@@ -21,7 +21,7 @@ $ ./ddns_updater <service> <username> <password> (<minutes>)
 
 \<password>: your password of DDNS service.
 
-\<minutes>: update every <minutes> minutes. Default value is 10.
+\<minutes>: update every \<minutes> minutes. Default value is 10.
 
 ### 3. tips
 
