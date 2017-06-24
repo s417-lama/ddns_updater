@@ -26,8 +26,14 @@ config :ddns_updater, mydns_url: "https://www.mydns.jp/login.html"
 config :logger, backends: [{LoggerFileBackend, :info},
                            {LoggerFileBackend, :error}]
 
-config :logger, :info, path: "info.log", level: :info
-config :logger, :error, path: "error.log", level: :error
+config :logger, :info,
+  path: "info.log",
+  level: :info,
+  format: "$date $time [$level] $message\n"
+config :logger, :error,
+  path: "error.log",
+  level: :error,
+  format: "$date $time [$level] $message\n"
 
 # It is also possible to import configuration files, relative to this
 # directory. For example, you can emulate configuration per environment
